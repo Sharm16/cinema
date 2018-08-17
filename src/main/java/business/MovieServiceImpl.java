@@ -1,44 +1,58 @@
 package business;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
 import persistence.MovieRepository;
-import constants.Omdb;
-public class MovieServiceImpl {
+import persistence.domain.Movie;
+
+public class MovieServiceImpl implements MovieService {
 
 	@Autowired
 	private MovieRepository movieReop;
 	@Autowired
-	private Omdb  omdb;
+	private MovieDto movieDto;
 	Gson gson = new Gson();
 	
-
 	
-	public String getMovieById(int id) throws IOException {
-		String apiKey = omdb.getApiKey();
-		String link = "http://www.omdbapi.com/?i=" + id + apiKey;
 
-		URL url = new URL(link);
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-
-		String line;
-		{
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
-
-			reader.close();
-			
-		}
-		String json = gson.toJson(line);
-		return line;
+	@Override
+	public Movie getMovieById(String id) throws SQLException {
+		 Connection c = null;
+	     Statement stmt = null;
+	     try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/cinema",
+	            "postgres", "admin");
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	      stmt = c.createStatement();
+	         String sql = "query";
+	         stmt.executeUpdate(sql);
+	         stmt.close();
+	      
+	         c.close();
+	     // System.out.println("Opened database successfully");
+	   
+		return null;
 	}
+
+	@Override
+	public void addMovieById(String id)throws SQLException, IOException {
+		movieDto.addMovie(id);
+
 	}
+}

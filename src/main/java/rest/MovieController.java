@@ -1,5 +1,8 @@
 package rest;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +15,13 @@ public class MovieController {
 	MovieService service;
 
 	@RequestMapping("/getMovie/{id}")
-	public Movie getTrainerById(@PathVariable Integer id) {
+	public Movie getMovieById(@PathVariable String id) throws SQLException {
 		return service.getMovieById(id);
 	}
 	
-	@RequestMapping("/getMovie/{title}")
-	public Movie getTrainerById(@PathVariable String title) {
-		return service.getMovieByTitle(title);
+	@RequestMapping("/addMovie/{id}")
+	public void addMovieById(@PathVariable String id)throws SQLException, IOException {
+		service.addMovieById(id);
 	}
+
 }
