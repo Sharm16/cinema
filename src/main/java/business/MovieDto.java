@@ -87,7 +87,8 @@ public class MovieDto {
 		// This method will add the movie to the database using the imdb id and the data
 		// taken from the above method
 		String str = getMovieByIdFromOmdb(id);
-		// gets a string value as result
+		String json = gson.toJson(str);
+		// gets a string value as result 
 		Connection c = null;
 		Statement stmt = null;
 		String query = "insert into movie_db(id,imdb_id,title,rated,release_date,genre,director,actors,plot,poster,runtime,imdbrating) values("
